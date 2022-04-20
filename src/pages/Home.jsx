@@ -5,8 +5,8 @@ import Veggie from '../compnents/Veggie'
 const Home = () => {
   return (
     <div>
-        <Veggie/>
-        <Popular/>
+      <Popular/>
+      <Veggie/>
     </div>
   )
 }
