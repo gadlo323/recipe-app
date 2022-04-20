@@ -36,7 +36,7 @@ const Veggie = () => {
       <h3>Vegetarian Picks</h3>
       <Splide options={{
           perPage:3,
-          arrows:false,
+          arrows:true,
           pagination:false,
           drag:"free",
           gap:'5rem'

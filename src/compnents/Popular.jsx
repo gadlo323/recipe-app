@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
-import {Wrapper,Card,Gradient} from "./Styleds"
+import { Wrapper, Card, Gradient } from "./Styleds";
 // Default theme
 import "@splidejs/react-splide/css";
 // or other themes
@@ -16,38 +16,42 @@ const Popular = () => {
   }, []);
 
   const getPopular = async () => {
-      const checkPopular = localStorage.getItem("popular");
-      if(checkPopular)
-      setPopular(JSON.parse(checkPopular))
-      else{
-        const api = await fetch(
-          `https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9`
-        );
-        const data = await api.json();
-        localStorage.setItem("popular",JSON.stringify(data.recipes))
-        setPopular(data.recipes);
-      }
-     
+    const checkPopular = localStorage.getItem("popular");
+    if (checkPopular) setPopular(JSON.parse(checkPopular));
+    else {
+      const api = await fetch(
+        `https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9`
+      );
+      const data = await api.json();
+      localStorage.setItem("popular", JSON.stringify(data.recipes));
+      setPopular(data.recipes);
+    }
   };
   return (
     <div>
       <Wrapper>
         <h3>Popular Picks</h3>
-        <Splide options={{
-            perPage:4,
-            arrows:false,
-            pagination:false,
-            drag:"free",
-            gap:'5rem'
-        }}>
+        <Splide
+          options={{
+            perPage: 4,
+            arrows: true,
+            pagination: false,
+            drag: "free",
+            gap: "5rem",
+          }}
+        >
           {popular.map((recipe) => {
             return (
-            <SplideSlide key={recipe.id}>
-              <Card>
-                <p>{recipe.title}</p>
-                <img src={recipe.image} alt={recipe.title}></img>
-              </Card>
-            </SplideSlide>
+              <SplideSlide key={recipe.id}>
+                <Card>
+                  <p>{recipe.title}</p>
+                  {recipe.image ? (
+                    <img src={recipe.image} alt={recipe.title}></img>
+                  ) : (
+                    <img src={"./no-image.png"} alt={recipe.title}></img>
+                  )}
+                </Card>
+              </SplideSlide>
             );
           })}
         </Splide>
