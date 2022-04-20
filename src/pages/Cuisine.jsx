@@ -8,35 +8,36 @@ const Cuisine = () => {
   const { type } = useParams();
 
   useEffect(() => {
-    getCuisine(type);
+    getCuisine();
   }, [type]);
 
-  const getCuisine = async (name) => {
-    const checkCuisine = localStorage.getItem("cuisine");
-    if (checkCuisine) setCuisine(JSON.parse(checkCuisine));
-    else {
-      const data = await fetch(
-        `https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.REACT_APP_API_KEY}&number=12&cuisine=${name}`
-      );
-      const recipes = await data.json();
-      console.log(recipes);
-      localStorage.setItem("cuisine", JSON.stringify(recipes.results));
-      setCuisine(recipes.results);
-    }
+  const getCuisine = async () => {
+    const data = await fetch(
+      `https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.REACT_APP_API_KEY}&number=12&cuisine=${type}`
+    );
+    const recipes = await data.json();
+    setCuisine(recipes.results);
   };
 
   return (
     <div>
-      <Grid>
+      <Grid
+        animate={{ opacity: 1 }}
+        initial={{ opacity: 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 1 }}
+      >
         {cuisine.map((recipe) => {
           return (
             <MiniCard key={recipe.id}>
-              <p>{recipe.title}</p>
-              {recipe.image ? (
-                <img src={recipe.image} alt={recipe.title}></img>
-              ) : (
-                <img src={"./no-image.png"} alt={recipe.title}></img>
-              )}
+              <Link to={"/recipe/" + recipe.id}>
+                <p>{recipe.title}</p>
+                {recipe.image ? (
+                  <img src={recipe.image} alt={recipe.title}></img>
+                ) : (
+                  <img src={"./no-image.png"} alt={recipe.title}></img>
+                )}
+              </Link>
             </MiniCard>
           );
         })}
